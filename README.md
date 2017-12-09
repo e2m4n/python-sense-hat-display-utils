@@ -124,4 +124,4 @@ Make sure important messages aren't missed: try using the `pulse` action to flas
 * Home Assistant creators
 * Miniwi font creator
 
-[Sphinx HTML Docs](doc/_build/index.html)
+[Docs](http://sense-hat-display-utilities.readthedocs.io/en/latest/)
