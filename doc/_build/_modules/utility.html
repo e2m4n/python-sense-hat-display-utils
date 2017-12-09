@@ -151,7 +151,7 @@
             class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_backup</span> <span
             class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">backup</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__backup</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span
             class="p">):</span>
@@ -161,7 +161,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autorestore</span><span
             class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__restore</span><span
+            class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sh</span> <span class="o">=</span> <span
             class="kc">None</span>
 
@@ -636,7 +637,7 @@
 
 <div class="viewcode-block" id="SenseHatUtility.backup"><a class="viewcode-back"
                                                            href="../index.html#utility.SenseHatUtility.backup">[docs]</a>    <span
-        class="k">def</span> <span class="nf">backup</span><span class="p">(</span><span class="bp">self</span><span
+        class="k">def</span> <span class="nf">__backup</span><span class="p">(</span><span class="bp">self</span><span
         class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_backup</span> <span
             class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sh</span><span
@@ -644,7 +645,7 @@
 
 <div class="viewcode-block" id="SenseHatUtility.restore"><a class="viewcode-back"
                                                             href="../index.html#utility.SenseHatUtility.restore">[docs]</a>    <span
-        class="k">def</span> <span class="nf">restore</span><span class="p">(</span><span class="bp">self</span><span
+        class="k">def</span> <span class="nf">__restore</span><span class="p">(</span><span class="bp">self</span><span
         class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sh</span><span class="o">.</span><span
             class="n">set_pixels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span

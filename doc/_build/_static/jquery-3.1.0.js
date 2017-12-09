@@ -5517,7 +5517,7 @@
         return elem;
     }
 
-// Replace/restore the type attribute of script elements for safe DOM manipulation
+// Replace/__restore the type attribute of script elements for safe DOM manipulation
     function disableScript(elem) {
         elem.type = ( elem.getAttribute("type") !== null ) + "/" + elem.type;
         return elem;
@@ -9515,7 +9515,7 @@
                 if (overwritten === undefined) {
                     jQuery(window).removeProp(callbackName);
 
-                    // Otherwise restore preexisting value
+                    // Otherwise __restore preexisting value
                 } else {
                     window[callbackName] = overwritten;
                 }
