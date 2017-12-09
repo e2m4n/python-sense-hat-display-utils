@@ -1,0 +1,421 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>icons &#8212; SenseHAT Utility 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css"/>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css"/>
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT: '../',
+            VERSION: '0.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE: true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html"/>
+    <link rel="search" title="Search" href="../search.html"/>
+</head>
+<body>
+<div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+        <li class="right" style="margin-right: 10px">
+            <a href="../genindex.html" title="General Index"
+               accesskey="I">index</a></li>
+        <li class="right">
+            <a href="../py-modindex.html" title="Python Module Index"
+            >modules</a> |
+        </li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SenseHAT Utility 0.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
+    </ul>
+</div>
+
+<div class="document">
+    <div class="documentwrapper">
+        <div class="bodywrapper">
+            <div class="body" role="main">
+
+                <h1>Source code for icons</h1>
+                <div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">W</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span
+                        class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span
+                        class="mi">255</span><span class="p">]</span>  <span class="c1"># white</span>
+<span class="n">R</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span
+                        class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span
+                        class="mi">0</span><span class="p">]</span>  <span class="c1"># red</span>
+<span class="n">G</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span
+                        class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span
+                        class="p">]</span>  <span class="c1"># green</span>
+<span class="n">B</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span
+                        class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span
+                        class="p">]</span>  <span class="c1"># blue</span>
+<span class="n">C</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span
+                        class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span
+                        class="mi">255</span><span class="p">]</span>  <span class="c1"># cyan</span>
+<span class="n">M</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span
+                        class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span
+                        class="p">]</span>  <span class="c1"># magenta</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span
+                        class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span
+                        class="p">]</span>  <span class="c1"># yellow</span>
+<span class="n">K</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span
+                        class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span
+                        class="mi">0</span><span class="p">]</span>  <span class="c1"># black</span>
+<span class="n">O</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span
+                        class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span
+                        class="p">]</span>  <span class="c1"># orange</span>
+<span class="n">P</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span
+                        class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">127</span><span
+                        class="p">]</span>  <span class="c1"># pink</span>
+<span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">128</span><span
+                        class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span
+                        class="p">]</span>  <span class="c1"># lime</span>
+<span class="n">T</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span
+                        class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span
+                        class="mi">128</span><span class="p">]</span>  <span class="c1"># turquoise</span>
+<span class="n">U</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span
+                        class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span
+                        class="mi">255</span><span class="p">]</span>  <span class="c1"># ultramarine</span>
+<span class="n">V</span> <span class="o">=</span> <span class="p">[</span><span class="mi">127</span><span
+                        class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span
+                        class="p">]</span>  <span class="c1"># violet</span>
+<span class="n">S</span> <span class="o">=</span> <span class="p">[</span><span class="mi">128</span><span
+                        class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span
+                        class="mi">128</span><span class="p">]</span>  <span class="c1"># stone</span>
+
+
+<div class="viewcode-block" id="SenseHatIcon"><a class="viewcode-back"
+                                                 href="../index.html#icons.SenseHatIcon">[docs]</a><span
+        class="k">class</span> <span class="nc">SenseHatIcon</span><span class="p">(</span><span
+        class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A representation of an 8x8 icon for the Sense HAT display</span>
+
+<span class="sd">    How shall we represent [R,G,B] * 8 * 8 ?</span>
+<span class="sd">    Single character represents pixel colour?</span>
+<span class="sd">    v1:</span>
+
+<span class="sd">    W = [255, 255, 255]  # white</span>
+<span class="sd">    R = [255, 0, 0]  # red</span>
+<span class="sd">    G = [0, 255, 0]  # green</span>
+<span class="sd">    B = [0, 0, 255]  # blue</span>
+<span class="sd">    C = [0, 255, 255]  # cyan</span>
+<span class="sd">    M = [255, 0, 255]  # magenta</span>
+<span class="sd">    Y = [255, 255, 0]  # yellow</span>
+<span class="sd">    K = [0, 0, 0]  # black</span>
+
+<span class="sd">    v1.1 extended palette:</span>
+<span class="sd">    O = [255, 128, 0]  # orange</span>
+<span class="sd">    P = [255, 0, 127]  # pink</span>
+<span class="sd">    L = [128, 255, 0]  # lime</span>
+<span class="sd">    T = [0, 255, 128]  # turquoise</span>
+<span class="sd">    U = [0, 128, 255]  # ultramarine</span>
+<span class="sd">    V = [127, 0, 255]  # violet</span>
+<span class="sd">    S = [128,128,128]  # stone</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__sample</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\</span>
+<span class="s2">    WRGBCMYK</span><span class="se">\</span>
+<span class="s2">    WRGBCMYK</span><span class="se">\</span>
+<span class="s2">    WRGBCMYK</span><span class="se">\</span>
+<span class="s2">    WRGBCMYK</span><span class="se">\</span>
+<span class="s2">    WRGBCMYK</span><span class="se">\</span>
+<span class="s2">    WRGBCMYK</span><span class="se">\</span>
+<span class="s2">    WRGBCMYK</span><span class="se">\</span>
+<span class="s2">    WRGBCMYK</span><span class="se">\</span>
+<span class="s2">    &quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span
+            class="p">,</span> <span class="n">pixel_string</span><span class="o">=</span><span
+            class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pixel_string</span> <span class="ow">is</span> <span
+            class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pixels</span> <span
+            class="o">=</span> <span class="p">[</span><span class="nb">eval</span><span class="p">(</span><span
+            class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span
+            class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span
+            class="o">.</span><span class="n">__sample</span><span class="o">.</span><span class="n">replace</span><span
+            class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span
+            class="p">))]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pixels</span> <span
+            class="o">=</span> <span class="p">[</span><span class="nb">eval</span><span class="p">(</span><span
+            class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span
+            class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">pixel_string</span><span
+            class="o">.</span><span class="n">replace</span><span class="p">(</span><span
+            class="s2">&quot; &quot;</span><span class="p">,</span>
+                                                                      <span class="s2">&quot;&quot;</span><span
+            class="p">))]</span>  <span class="c1"># This doesn&#39;t work now constants are &quot;self.XXX&quot; UPDATE: F**K YOU PYTHON</span></div>
+            <span class="c1"># self.pixels = [eval(i) for i in list([&quot;self.&quot;+item for item in list(pixel_string.replace(&quot; &quot;,&quot;&quot;))])]</span>
+
+
+<div class="viewcode-block" id="SenseHatIconCollection"><a class="viewcode-back"
+                                                           href="../index.html#icons.SenseHatIconCollection">[docs]</a><span
+        class="k">class</span> <span class="nc">SenseHatIconCollection</span><span class="p">(</span><span class="nb">dict</span><span
+        class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Icon collection for the Sense HAT</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">icons</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;template&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span
+            class="se">\</span>
+<span class="s2">        BBBBBBBB</span><span class="se">\</span>
+<span class="s2">        BBBBBBBB</span><span class="se">\</span>
+<span class="s2">        BBBBBBBB</span><span class="se">\</span>
+<span class="s2">        BBBBBBBB</span><span class="se">\</span>
+<span class="s2">        BBBBBBBB</span><span class="se">\</span>
+<span class="s2">        BBBBBBBB</span><span class="se">\</span>
+<span class="s2">        BBBBBBBB</span><span class="se">\</span>
+<span class="s2">        BBBBBBBB</span><span class="se">\</span>
+<span class="s2">        &quot;</span><span class="p">,</span>
+        <span class="s2">&quot;estelada&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span
+            class="se">\</span>
+<span class="s2">        BYYYYYYY</span><span class="se">\</span>
+<span class="s2">        BBRRRRRR</span><span class="se">\</span>
+<span class="s2">        BBBYYYYY</span><span class="se">\</span>
+<span class="s2">        BWBBRRRR</span><span class="se">\</span>
+<span class="s2">        BBBYYYYY</span><span class="se">\</span>
+<span class="s2">        BBRRRRRR</span><span class="se">\</span>
+<span class="s2">        BYYYYYYY</span><span class="se">\</span>
+<span class="s2">        KKKKKKKK</span><span class="se">\</span>
+<span class="s2">        &quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span
+            class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span
+            class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span
+            class="n">kwargs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">icon</span> <span class="ow">in</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">icons</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">icon</span><span
+            class="p">]</span> <span class="o">=</span> <span class="n">SenseHatIcon</span><span class="p">(</span><span
+            class="bp">self</span><span class="o">.</span><span class="n">icons</span><span class="p">[</span><span
+            class="n">icon</span><span class="p">])</span>
+
+<div class="viewcode-block" id="SenseHatIconCollection.clock"><a class="viewcode-back"
+                                                                 href="../index.html#icons.SenseHatIconCollection.clock">[docs]</a>    <span
+        class="k">def</span> <span class="nf">clock</span><span class="p">(</span><span class="bp">self</span><span
+        class="p">,</span> <span class="n">hhmm</span><span class="o">=</span><span class="kc">None</span><span
+        class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Small analogue clock. Not very accurate.</span>
+<span class="sd">        Can show eight hours, so have intervals of 12 / 8 = 1.5 hours</span>
+<span class="sd">        Shift by 1.5 / 2 = 0.75 hours to shift to closest hour</span>
+<span class="sd">        How many minutes? Minimum 8: 0,7.5,15,22.5,30,37.5,45,52.5</span>
+<span class="sd">        Possibly try 16 by shifting outer segment one block clockwise, giving:</span>
+<span class="sd">        0.0, 3.75, 7.5, 11.25, 15.0, 18.75, 22.5, 26.25, 30.0, 33.75, 37.5, 41.25, 45.0, 48.75, 52.5, 56.25, 60.0</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\</span>
+<span class="s2">            RRRRRRRK</span><span class="se">\</span>
+<span class="s2">            RKKKKKRK</span><span class="se">\</span>
+<span class="s2">            RKKKKKRK</span><span class="se">\</span>
+<span class="s2">            RKKRKKRK</span><span class="se">\</span>
+<span class="s2">            RKKKKKRK</span><span class="se">\</span>
+<span class="s2">            RKKKKKRK</span><span class="se">\</span>
+<span class="s2">            RRRRRRRK</span><span class="se">\</span>
+<span class="s2">            KKKKKKKK</span><span class="se">\</span>
+<span class="s2">        &quot;</span><span class="o">.</span><span class="n">replace</span><span
+            class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span
+            class="p">)</span>
+
+        <span class="k">if</span> <span class="n">hhmm</span> <span class="ow">is</span> <span
+            class="kc">None</span><span class="p">:</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span
+            class="n">localtime</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span
+            class="n">strptime</span><span class="p">(</span><span class="n">hhmm</span><span class="p">,</span><span
+            class="s2">&quot;%H%M&quot;</span><span class="p">)</span>
+
+        <span class="n">hours</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span
+            class="n">tm_hour</span> <span class="o">%</span> <span class="mi">12</span>
+        <span class="n">minutes</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span
+            class="n">tm_min</span>
+        <span class="n">decimal_time</span> <span class="o">=</span> <span class="n">hours</span> <span
+            class="o">+</span> <span class="p">(</span><span class="n">minutes</span> <span class="o">/</span> <span
+            class="mi">60</span><span class="p">)</span>
+
+        <span class="c1"># Hours</span>
+        <span class="c1"># if 0.0 &lt;= decimal_time &lt;= shift:  # 0.75</span>
+        <span class="c1">#     template[19] = &quot;W&quot;</span>
+        <span class="c1"># elif shift &lt;= decimal_time &lt;= (shift + interval):  # 2.25</span>
+        <span class="c1">#     template[20] = &quot;W&quot;</span>
+        <span class="c1"># elif (shift + interval) &lt;= decimal_time &lt;= (shift + (interval * 2)):  # 3.75</span>
+        <span class="c1">#     template[28] = &quot;W&quot;</span>
+        <span class="c1"># elif (shift + (interval * 2)) &lt;= decimal_time &lt;= (shift + (interval * 3)):  # 5.25</span>
+        <span class="c1">#     template[36] = &quot;W&quot;</span>
+        <span class="c1"># elif (shift + (interval * 3)) &lt;= decimal_time &lt;= (shift + (interval * 4)):  # 6.75</span>
+        <span class="c1">#     template[35] = &quot;W&quot;</span>
+        <span class="c1"># elif (shift + (interval * 4)) &lt;= decimal_time &lt;= (shift + (interval * 5)):  # 8.25</span>
+        <span class="c1">#     template[34] = &quot;W&quot;</span>
+        <span class="c1"># elif (shift + (interval * 5)) &lt;= decimal_time &lt;= (shift + (interval * 6)):  # 9.75</span>
+        <span class="c1">#     template[26] = &quot;W&quot;</span>
+        <span class="c1"># elif (shift + (interval * 6)) &lt;= decimal_time &lt;= (shift + (interval * 7)):  # 11.25</span>
+        <span class="c1">#     template[18] = &quot;W&quot;</span>
+        <span class="c1"># elif (shift + (interval * 7)) &lt;= decimal_time &lt;= (shift + (interval * 8)):  # 12.75</span>
+        <span class="c1">#     template[19] = &quot;W&quot;</span>
+
+        <span class="c1"># Hours</span>
+        <span class="n">interval</span> <span class="o">=</span> <span class="mi">12</span> <span
+            class="o">/</span> <span class="mi">8</span>  <span class="c1"># hours in clock face divided by hours able to display</span>
+        <span class="n">shift</span> <span class="o">=</span> <span class="n">interval</span> <span
+            class="o">/</span> <span class="mi">2</span>
+        <span class="n">hour_map</span> <span class="o">=</span> <span class="p">{</span><span class="o">-</span><span
+            class="mi">1</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span
+            class="mi">0</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span
+            class="mi">1</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span
+            class="mi">2</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span> <span
+            class="mi">3</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span> <span
+            class="mi">4</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span> <span
+            class="mi">5</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span> <span
+            class="mi">6</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span
+            class="mi">7</span><span class="p">:</span> <span class="mi">19</span><span class="p">}</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span
+            class="o">.</span><span class="n">_map_time_to_pixels</span><span class="p">(</span><span class="n">decimal_time</span><span
+            class="p">,</span> <span class="n">hour_map</span><span class="p">,</span> <span
+            class="n">interval</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span
+            class="n">template</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+
+        <span class="c1"># Minutes</span>
+        <span class="n">interval</span> <span class="o">=</span> <span class="mi">60</span> <span
+            class="o">/</span> <span class="mi">16</span>  <span class="c1"># minutes in hour divided by minutes able to display</span>
+        <span class="n">shift</span> <span class="o">=</span> <span class="n">interval</span> <span
+            class="o">/</span> <span class="mi">2</span>
+        <span class="n">minute_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span
+            class="mi">19</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span> <span
+            class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="mi">19</span><span
+            class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="mi">1</span><span
+            class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span
+            class="mi">13</span><span class="p">],</span> <span class="mi">2</span><span class="p">:</span> <span
+            class="p">[</span><span class="mi">28</span><span class="p">,</span> <span class="mi">21</span><span
+            class="p">],</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span
+            class="mi">28</span><span class="p">,</span> <span class="mi">29</span><span class="p">],</span> <span
+            class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">28</span><span
+            class="p">,</span> <span class="mi">37</span><span class="p">],</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="p">[</span><span class="mi">36</span><span
+            class="p">,</span> <span class="mi">45</span><span class="p">],</span> <span class="mi">6</span><span
+            class="p">:</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span
+            class="mi">44</span><span class="p">],</span> <span class="mi">7</span><span class="p">:</span> <span
+            class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">43</span><span
+            class="p">],</span> <span class="mi">8</span><span class="p">:</span> <span class="p">[</span><span
+            class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">],</span> <span
+            class="mi">9</span><span class="p">:</span> <span class="p">[</span><span class="mi">34</span><span
+            class="p">,</span> <span class="mi">41</span><span class="p">],</span> <span class="mi">10</span><span
+            class="p">:</span> <span class="p">[</span><span class="mi">26</span><span class="p">,</span> <span
+            class="mi">33</span><span class="p">],</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="p">[</span><span class="mi">26</span><span
+            class="p">,</span> <span class="mi">25</span><span class="p">],</span> <span class="mi">12</span><span
+            class="p">:</span> <span class="p">[</span><span class="mi">26</span><span class="p">,</span> <span
+            class="mi">17</span><span class="p">],</span> <span class="mi">13</span><span class="p">:</span> <span
+            class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">9</span><span
+            class="p">],</span> <span class="mi">14</span><span class="p">:</span> <span class="p">[</span><span
+            class="mi">19</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span
+            class="mi">15</span><span class="p">:</span> <span class="p">[</span><span class="mi">19</span><span
+            class="p">,</span> <span class="mi">11</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span
+            class="o">.</span><span class="n">_map_time_to_pixels</span><span class="p">(</span><span
+            class="n">minutes</span><span class="p">,</span> <span class="n">minute_map</span><span
+            class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">shift</span><span
+            class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="mi">16</span><span
+            class="p">)</span>
+
+        <span class="k">return</span> <span class="n">SenseHatIcon</span><span class="p">(</span><span class="n">template</span><span
+            class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_map_time_to_pixels</span><span class="p">(</span><span class="n">decimal_time</span><span
+            class="p">,</span> <span class="n">pixel_map</span><span class="p">,</span> <span
+            class="n">interval</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span
+            class="n">template</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span
+            class="n">colour</span><span class="o">=</span><span class="s2">&quot;W&quot;</span><span
+            class="p">):</span>
+        <span class="n">string_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span
+            class="n">template</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span
+            class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span
+            class="p">,</span> <span class="n">stop</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">shift</span> <span
+            class="o">+</span> <span class="p">(</span><span class="n">interval</span> <span class="o">*</span> <span
+            class="n">i</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">decimal_time</span> <span
+            class="o">&lt;=</span> <span class="p">(</span><span class="n">shift</span> <span class="o">+</span> <span
+            class="p">(</span><span class="n">interval</span> <span class="o">*</span> <span class="p">(</span><span
+            class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))):</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span
+            class="n">pixel_map</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span
+            class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">pixel</span> <span class="ow">in</span> <span class="n">pixel_map</span><span
+            class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                        <span class="n">string_list</span><span class="p">[</span><span class="n">pixel</span><span
+            class="p">]</span> <span class="o">=</span> <span class="n">colour</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">string_list</span><span class="p">[</span><span class="n">pixel_map</span><span
+            class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span
+            class="n">colour</span>
+                <span class="k">break</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span
+            class="n">join</span><span class="p">(</span><span class="n">string_list</span><span
+            class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span
+                        class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <div id="searchbox" style="display: none" role="search">
+                <h3>Quick search</h3>
+                <form class="search" action="../search.html" method="get">
+                    <div><input type="text" name="q"/></div>
+                    <div><input type="submit" value="Go"/></div>
+                    <input type="hidden" name="check_keywords" value="yes"/>
+                    <input type="hidden" name="area" value="default"/>
+                </form>
+            </div>
+            <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+    </div>
+    <div class="clearer"></div>
+</div>
+<div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+        <li class="right" style="margin-right: 10px">
+            <a href="../genindex.html" title="General Index"
+            >index</a></li>
+        <li class="right">
+            <a href="../py-modindex.html" title="Python Module Index"
+            >modules</a> |
+        </li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SenseHAT Utility 0.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html">Module code</a> &#187;</li>
+    </ul>
+</div>
+<div class="footer" role="contentinfo">
+    &#169; Copyright 2017, Aaron Fleming.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+</div>
+</body>
+</html>

@@ -1,9 +1,11 @@
-import time
 import os
 import sys
-from sense_hat import SenseHat
-from colour import Color as _Color
+import time
+
 from PIL import Image, ImageDraw, ImageFont
+from colour import Color as _Color
+from sense_hat import SenseHat
+
 from icons import SenseHatIconCollection
 
 
@@ -51,6 +53,7 @@ class SenseHatUtility(object):
     DEFAULT_SPEED = 0.1  # speed is passed to time.sleep() to hold a frame
     WIDTH = 8  # Maybe if a SenseHat v2 comes out one day?
     HEIGHT = 8
+    ZERO_BRIGHTNESS = 47  # offset. 47 == 0 in terms of Sense HAT's brightness.
     DEFAULT_FONT = "fonts/miniwi-8.pil"  # https://github.com/josuah/miniwi
     DEFAULT_FONT_SIZE = 6  # Bigger font, bigger size. AKA letter 'width' in the scroll function
     DEFAULT_X_OFFSET = 0  # "Don't touch this" - MC Hammer
@@ -77,6 +80,7 @@ class SenseHatUtility(object):
         Restore the original display when done
 
         """
+        self.fade_out()
         if self.autorestore:
             self.restore()
         self.sh = None
@@ -238,6 +242,7 @@ class SenseHatUtility(object):
     def show_icon(self, name, **kwargs):
         """
         Load an icon by name and show it.
+
         Args:
             name: Name of icon
 
@@ -247,7 +252,8 @@ class SenseHatUtility(object):
 
     def show_clock(self, **kwargs):
         """
-        Load the dynamic clock and show it
+        Load the dynamic clock and show it.
+
         Args:
             **kwargs: unused
 
@@ -256,9 +262,16 @@ class SenseHatUtility(object):
         self.sh.set_pixels(icon.clock().pixels)
 
     def show_clock_forever(self, **kwargs):
+        """
+        Show the clock until interrupted by CTRL+C
+
+        Args:
+            **kwargs: unused
+
+        """
         while True:
             self.show_clock(**kwargs)
-            time.sleep(60)
+            time.sleep(30)
 
     def _xy2px(self, x, y):
         """
@@ -294,6 +307,10 @@ class SenseHatUtility(object):
 
         Warnings:
             There is no zero! This may turn out to be a big problem. Hope not...
+            Yep. So... after re-rooting coordinates, there's (obviously) a gap
+            if resulting X is > 4 then subtract 1
+            if resulting Y is > 4 then subtract 1
+            should fix it... :-/
 
         Args:
             x: X coordinate (between -4 and +4)
@@ -308,6 +325,14 @@ class SenseHatUtility(object):
             >>> shu = SenseHatUtility()
             >>> shu._xy2px(-2, 2)
             18
+            >>> shu._xy2px(-4, 4)
+            0
+            >>> shu._xy2px(4, 4)
+            7
+            >>> shu._xy2px(4, -4)
+            63
+            >>> shu._xy2px(-4, -4)
+            56
             >>> shu._xy2px(2,8) #doctest: +ELLIPSIS
             Traceback (most recent call last):
               File "<input>", line 1, in <module>
@@ -315,7 +340,7 @@ class SenseHatUtility(object):
                 assert -4 <= y <= 4
             AssertionError
             >>> ([shu._xy2px(x,y) for x in range(-4,4) for y in range(-4,4) if x is not 0 and y is not 0 ])
-            [64, 56, 48, 40, 24, 16, 8, 65, 57, 49, 41, 25, 17, 9, 66, 58, 50, 42, 26, 18, 10, 67, 59, 51, 43, 27, 19, 11, 69, 61, 53, 45, 29, 21, 13, 70, 62, 54, 46, 30, 22, 14, 71, 63, 55, 47, 31, 23, 15]
+            [56, 48, 40, 32, 24, 16, 8, 57, 49, 41, 33, 25, 17, 9, 58, 50, 42, 34, 26, 18, 10, 59, 51, 43, 35, 27, 19, 11, 60, 52, 44, 36, 28, 20, 12, 61, 53, 45, 37, 29, 21, 13, 62, 54, 46, 38, 30, 22, 14]
 
 
 
@@ -326,13 +351,14 @@ class SenseHatUtility(object):
         assert y != 0
 
         a, b = x + 4, -1 * (y - 4)
+        a = a - 1 if a > 4 else a
+        b = b - 1 if b > 4 else b
         p = a + (b * 8)
         return p
 
-
     def pulse(self, colour, speed, count, **kwargs):
         """
-        Pulse a colour from 4 pixels lit in the middle to all-but-4 pixels lit
+        Pulse a colour from 4 pixels lit in the middle to all-but-4 pixels lit.
 
         Args:
             colour:
@@ -345,7 +371,7 @@ class SenseHatUtility(object):
         """
         c = list(colour.get_rgb_int())
         # Old approach (didn't work, code looks horrible)
-        frames = 7 * [64 * [[0, 0, 0]]]
+        # frames = 7 * [64 * [[0, 0, 0]]]
         #
         # for i in (27, 28, 35, 36):
         #     frames[0][i] = c
@@ -362,19 +388,81 @@ class SenseHatUtility(object):
         #     frames[3][i] = c
 
         # New approach
+        # draw in one quadrant and copy it
+        #
+        count_reverse_at = int(self.WIDTH / 2)  # 4
+        count_to = count * count_reverse_at * 2
+        start = 1
 
-
-        for number in range(0, count):
-            for frame in frames:
+        for i in range(start, count_to + 1):
+            for j in range(start, count_reverse_at + 1):  # Grow
+                frame = self._pulse_get_frame(c, j)
+                self.sh.set_pixels(frame)
+                time.sleep(speed)
+            for j in range(count_reverse_at, start - 1, -1):  # Shrink
+                frame = self._pulse_get_frame(c, j)
                 self.sh.set_pixels(frame)
                 time.sleep(speed)
 
-    def fade_out(self, speed):
-        steps = 256 - 47  # colour offset. 47 == 0 in terms of Sense HAT's brightness.
+    def _pulse_get_frame(self, colour, frame_number):
+        """
+        Calculates which pixels need to be on for a given frame
+        Args:
+            colour: The colour to light the pixels
+            frame_number: The frame number to calculate pixels for
+
+        Returns:
+            frame (list)
+
+        """
+        frame = 64 * [[0, 0, 0]]
+        # draw from x=-j to j
+        for pix in range(-frame_number, frame_number + 1):
+            if pix is not 0:
+                if -4 < pix < 4:  # Don't set the outermost corner pixels
+                    self._pulse_set_pixels(frame, pix, -pix, colour)
+                # draw along x and y axes
+                self._pulse_set_pixels(frame, 1, pix, colour)
+                if pix < -2 or pix > 2:  # draw along x,y=2 axes
+                    self._pulse_set_pixels(frame, 2, pix, colour)
+        return frame
+
+    def _pulse_set_pixels(self, frame, x, y, colour):
+        """
+        Sets a pixel and it's 4 mirrors (horizontally and vertically)
+        Args:
+            frame: The frame to work on
+            x: The x coordinate of the initial pixel to set
+            y: The y coordinate of the initial pixel to set
+            colour: The colour to set the pixel
+
+        Returns:
+            Modifies frame list in-place
+
+        """
+        for a in [x, -x]:
+            frame[self._xy2px(a, y)] = colour
+            frame[self._xy2px(y, a)] = colour
+
+    def fade_out(self, speed=DEFAULT_SPEED, **kwargs):
+        """
+        Fade out the display
+
+        Args:
+            speed: passed to time.sleep() in between fade steps
+
+        Returns:
+
+        """
+        zb = self.ZERO_BRIGHTNESS
+        steps = 256 - zb
         fade = self._fade_backup = self.sh.get_pixels()
         for i in range(0, steps):
             fade = [[max(0, r - 1), max(0, g - 1), max(0, b - 1)] for r, g, b in fade]
             self.sh.set_pixels(fade)
+            # if all([x == [0,0,0] for x in fade]):  # If all pixels are black then exit
+            if all([[r < zb, g < zb, b < zb] for i in fade for r, g, b in [i]]):
+                break
             time.sleep(speed)
 
     def backup(self):
@@ -382,10 +470,6 @@ class SenseHatUtility(object):
 
     def restore(self):
         self.sh.set_pixels(self._backup)
-
-
-def clamp(minimum, x, maximum):
-    return max(minimum, min(x, maximum))
 
 
 if __name__ == '__main__':

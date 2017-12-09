@@ -1,0 +1,710 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>utility &#8212; SenseHAT Utility 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css"/>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css"/>
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT: '../',
+            VERSION: '0.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE: true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html"/>
+    <link rel="search" title="Search" href="../search.html"/>
+</head>
+<body>
+<div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+        <li class="right" style="margin-right: 10px">
+            <a href="../genindex.html" title="General Index"
+               accesskey="I">index</a></li>
+        <li class="right">
+            <a href="../py-modindex.html" title="Python Module Index"
+            >modules</a> |
+        </li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SenseHAT Utility 0.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
+    </ul>
+</div>
+
+<div class="document">
+    <div class="documentwrapper">
+        <div class="bodywrapper">
+            <div class="body" role="main">
+
+                <h1>Source code for utility</h1>
+                <div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">sense_hat</span> <span class="k">import</span> <span
+                        class="n">SenseHat</span>
+<span class="kn">from</span> <span class="nn">colour</span> <span class="k">import</span> <span
+                        class="n">Color</span> <span class="k">as</span> <span class="n">_Color</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span><span
+                        class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
+<span class="kn">from</span> <span class="nn">icons</span> <span class="k">import</span> <span class="n">SenseHatIconCollection</span>
+
+
+<div class="viewcode-block" id="Colour"><a class="viewcode-back" href="../source/utility.html#utility.Colour">[docs]</a><span
+        class="k">class</span> <span class="nc">Colour</span><span class="p">(</span><span class="n">_Color</span><span
+        class="p">):</span>
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span
+            class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function exists because colour.Color is too clever for its own good</span>
+<span class="sd">         (actually, maybe I was being silly when I forgot to remove the reference - TODO: try removing this function)</span>
+<span class="sd">        Args:</span>
+<span class="sd">            item (str): name of attribute</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Reference to the attribute &lt;item&gt;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;get_rgb_int&quot;</span><span
+            class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rgb_int</span><span
+            class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span
+            class="n">Colour</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span
+            class="o">.</span><span class="fm">__getattr__</span><span class="p">(</span><span
+            class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span
+            class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span
+            class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Is this necessary? Try removing it and seeing what happens!</span>
+<span class="sd">        Args:</span>
+<span class="sd">            color:</span>
+<span class="sd">            **kwargs:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span
+            class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span
+            class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Colour.get_rgb_int"><a class="viewcode-back"
+                                                       href="../source/utility.html#utility.Colour.get_rgb_int">[docs]</a>    <span
+        class="k">def</span> <span class="nf">get_rgb_int</span><span class="p">(</span><span
+        class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The only thing that the colour.Color library doesn&#39;t do!</span>
+
+<span class="sd">        Returns: The colour in (0-255) range for PIL compatibility</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span
+            class="nb">int</span><span class="p">(</span><span class="n">float_colour</span> <span
+            class="o">*</span> <span class="mi">255</span><span class="p">)</span> <span class="k">for</span> <span
+            class="n">float_colour</span> <span class="ow">in</span> <span class="bp">self</span><span
+            class="o">.</span><span class="n">get_rgb</span><span class="p">()])</span></div></div>
+
+
+<div class="viewcode-block" id="SenseHatUtility"><a class="viewcode-back" href="../index.html#utility.SenseHatUtility">[docs]</a><span
+        class="k">class</span> <span class="nc">SenseHatUtility</span><span class="p">(</span><span
+        class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This class wraps the SenseHat class to provide display-related functions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DEFAULT_SPEED</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># speed is passed to time.sleep() to hold a frame</span>
+    <span class="n">WIDTH</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># Maybe if a SenseHat v2 comes out one day?</span>
+    <span class="n">HEIGHT</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">DEFAULT_FONT</span> <span class="o">=</span> <span class="s2">&quot;fonts/miniwi-8.pil&quot;</span>  <span
+            class="c1"># https://github.com/josuah/miniwi</span>
+    <span class="n">DEFAULT_FONT_SIZE</span> <span class="o">=</span> <span class="mi">6</span>  <span class="c1"># Bigger font, bigger size. AKA letter &#39;width&#39; in the scroll function</span>
+    <span class="n">DEFAULT_X_OFFSET</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># &quot;Don&#39;t touch this&quot; - MC Hammer</span>
+    <span class="n">DEFAULT_Y_OFFSET</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Some TrueType fonts have a lot of padding (to make room for accents?) and setting this to +/- 1 can make them fit better</span>
+    <span class="n">DEFAULT_FOREGROUND</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span>  <span
+            class="c1"># The colour module supports colour names or web RGB notation (plus other ways of creating colours)</span>
+    <span class="n">DEFAULT_BACKGROUND</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span
+            class="p">,</span> <span class="n">autorestore</span><span class="o">=</span><span
+            class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialise reference to SenseHat and take a copy of the current screen state.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            autorestore (bool, optional): Restore initial screen state when destroyed. Defaults to True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autorestore</span> <span class="o">=</span> <span
+            class="n">autorestore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sh</span> <span class="o">=</span> <span
+            class="n">SenseHat</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_font</span> <span class="o">=</span> <span
+            class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fade_backup</span> <span class="o">=</span> <span
+            class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_backup</span> <span
+            class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backup</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span
+            class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Restore the original display when done</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autorestore</span><span
+            class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sh</span> <span class="o">=</span> <span
+            class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span
+            class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This passes any calls to functions which don&#39;t exist to the SenseHat library.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            item (str): Function name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Reference to the function via getattr().</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AttributeError: if not found</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            This won&#39;t get called directly</span>
+
+<span class="sd">            &gt;&gt;&gt; shu = SenseHatUtility()</span>
+<span class="sd">            &gt;&gt;&gt; shu.low_light = True</span>
+
+<span class="sd">            &gt;&gt;&gt; shu.low_light</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; shu.__getattr__(&quot;qwertyuiop&quot;)</span>
+<span class="sd">            Traceback (most recent call last):</span>
+<span class="sd">              File &quot;&lt;input&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="sd">              File &quot;/home/osmc/SenseHatProject/utility.py&quot;, line 98, in __getattr__</span>
+<span class="sd">                raise AttributeError()</span>
+<span class="sd">            AttributeError</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span
+            class="bp">self</span><span class="o">.</span><span class="n">sh</span><span class="p">,</span> <span
+            class="n">item</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span
+            class="bp">self</span><span class="o">.</span><span class="n">sh</span><span class="p">,</span> <span
+            class="n">item</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_set_font</span><span class="p">(</span><span
+            class="bp">self</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span
+            class="n">font_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the font and set self._font, fallback to default if any issues</span>
+<span class="sd">        Args:</span>
+<span class="sd">            font: relative or absolute path to font file, TrueType or PIL format</span>
+<span class="sd">            font_size: used for TrueType fonts</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; shu = SenseHatUtility()</span>
+<span class="sd">            &gt;&gt;&gt; shu._set_font(shu.DEFAULT_FONT, shu.DEFAULT_FONT_SIZE)</span>
+
+<span class="sd">            &gt;&gt;&gt; shu._get_font().file.split(&quot;/&quot;)[-1].split(&quot;.&quot;)[0] == shu.DEFAULT_FONT.split(&quot;/&quot;)[-1].split(&quot;.&quot;)[0]</span>
+<span class="sd">            True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span
+            class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">font</span><span
+            class="p">):</span>
+                <span class="n">full_font_path</span> <span class="o">=</span> <span class="n">font</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">full_font_path</span> <span class="o">=</span> <span class="s2">&quot;</span><span
+            class="si">{}{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span
+            class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span
+            class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span
+            class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span
+            class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span
+            class="p">)),</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span><span
+            class="p">,</span> <span class="n">font</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">font</span><span class="p">[</span><span class="o">-</span><span
+            class="mi">3</span><span class="p">:]</span> <span class="o">==</span> <span
+            class="s2">&quot;ttf&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_font</span> <span
+            class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span
+            class="n">truetype</span><span class="p">(</span><span class="n">full_font_path</span><span
+            class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">font</span><span class="p">[</span><span class="o">-</span><span
+            class="mi">3</span><span class="p">:]</span> <span class="o">==</span> <span
+            class="s2">&quot;pil&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_font</span> <span
+            class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">load</span><span
+            class="p">(</span><span class="n">full_font_path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span
+            class="n">ex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_font</span> <span
+            class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span
+            class="n">load_default</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_font</span><span class="p">(</span><span
+            class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get _font stored by _set_font. Calls _set_font if _font not yet set.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ImageFont object</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; shu = SenseHatUtility()</span>
+<span class="sd">            &gt;&gt;&gt; shu._get_font() #doctest: +ELLIPSIS</span>
+<span class="sd">            &lt;PIL.ImageFont.ImageFont object at 0x...&gt;</span>
+
+<span class="sd">            &gt;&gt;&gt; shu._get_font().file.split(&quot;/&quot;)[-1].split(&quot;.&quot;)[0] == shu.DEFAULT_FONT.split(&quot;/&quot;)[-1].split(&quot;.&quot;)[0]</span>
+<span class="sd">            True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font</span> <span
+            class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_font</span><span class="p">(</span><span
+            class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_FONT</span><span
+            class="p">,</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">DEFAULT_FONT_SIZE</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font</span>
+
+<div class="viewcode-block" id="SenseHatUtility.print"><a class="viewcode-back"
+                                                          href="../index.html#utility.SenseHatUtility.print">[docs]</a>    <span
+        class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span
+        class="p">,</span>
+              <span class="n">message</span><span class="p">,</span>
+              <span class="n">colour</span><span class="o">=</span><span class="n">Colour</span><span class="p">(</span><span
+            class="n">DEFAULT_FOREGROUND</span><span class="p">),</span>
+              <span class="n">background_colour</span><span class="o">=</span><span class="n">Colour</span><span
+            class="p">(</span><span class="n">DEFAULT_BACKGROUND</span><span class="p">),</span>
+              <span class="n">x</span><span class="o">=</span><span class="n">DEFAULT_X_OFFSET</span><span
+            class="p">,</span>
+              <span class="n">y</span><span class="o">=</span><span class="n">DEFAULT_Y_OFFSET</span><span
+            class="p">,</span>
+              <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+              <span class="n">font</span><span class="o">=</span><span class="n">DEFAULT_FONT</span><span
+            class="p">,</span>
+              <span class="n">font_size</span><span class="o">=</span><span class="n">DEFAULT_FONT_SIZE</span><span
+            class="p">,</span>
+              <span class="o">**</span><span class="n">kwargs</span>
+              <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print message to the display.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            message (str): The text to display (only 2, maybe 3 characters will be visible).</span>
+<span class="sd">            colour: The colour to display in</span>
+<span class="sd">            background_colour: The colour to display _on_</span>
+<span class="sd">            font: The font (use something that&#39;s readable at around 8pt).</span>
+<span class="sd">            font_size: For TrueType fonts. Defaults to 8.</span>
+<span class="sd">            x: The x position to start drawing at. Use this when scrolling.</span>
+<span class="sd">            y: The y position to start drawing at. Usually used to slightly reposition fonts.</span>
+<span class="sd">            invert: Invert the colours (black text on &lt;colour&gt; background).</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Set the font if not already done</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font</span> <span
+            class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span
+            class="n">font</span> <span class="ow">is</span> <span class="ow">not</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_FONT</span> <span class="ow">or</span> <span
+            class="n">font_size</span> <span class="ow">is</span> <span class="ow">not</span> <span
+            class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_FONT_SIZE</span><span
+            class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_font</span><span class="p">(</span><span
+            class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">_get_font</span><span class="p">()</span>
+
+        <span class="c1"># The image to output</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span
+            class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span
+            class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">WIDTH</span><span
+            class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">HEIGHT</span><span
+            class="p">),</span>
+                          <span class="n">colour</span><span class="o">.</span><span class="n">get_rgb_int</span><span
+            class="p">()</span> <span class="k">if</span> <span class="n">invert</span> <span
+            class="k">else</span> <span class="n">background_colour</span><span class="o">.</span><span class="n">get_rgb_int</span><span
+            class="p">())</span>
+
+        <span class="c1"># The drawing utility</span>
+        <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span
+            class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">image</span><span
+            class="p">)</span>
+
+        <span class="c1"># Draw the text on the image. Calling strip() to avoid passing a multiline string to draw.text, which causes an exception with the default fallback font</span>
+        <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span
+            class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span
+            class="n">message</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span
+            class="n">background_colour</span><span class="o">.</span><span class="n">get_rgb_int</span><span class="p">()</span> <span
+            class="k">if</span> <span class="n">invert</span> <span class="k">else</span> <span
+            class="n">colour</span><span class="o">.</span><span class="n">get_rgb_int</span><span class="p">(),</span> <span
+            class="n">font</span><span class="p">)</span>
+
+        <span class="c1"># Output the image to the Sense HAT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sh</span><span class="o">.</span><span
+            class="n">set_pixels</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span
+            class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span
+            class="n">image</span><span class="o">.</span><span class="n">getdata</span><span
+            class="p">())))</span></div>
+
+<div class="viewcode-block" id="SenseHatUtility.scroll"><a class="viewcode-back"
+                                                           href="../index.html#utility.SenseHatUtility.scroll">[docs]</a>    <span
+        class="k">def</span> <span class="nf">scroll</span><span class="p">(</span><span class="bp">self</span><span
+        class="p">,</span>
+               <span class="n">message</span><span class="p">,</span>
+               <span class="n">colour</span><span class="o">=</span><span class="n">Colour</span><span
+            class="p">(</span><span class="n">DEFAULT_FOREGROUND</span><span class="p">),</span>
+               <span class="n">background_colour</span><span class="o">=</span><span class="n">Colour</span><span
+            class="p">(</span><span class="n">DEFAULT_BACKGROUND</span><span class="p">),</span>
+               <span class="n">speed</span><span class="o">=</span><span class="n">DEFAULT_SPEED</span><span
+            class="p">,</span>
+               <span class="n">font_y_offset</span><span class="o">=</span><span class="n">DEFAULT_Y_OFFSET</span><span
+            class="p">,</span>
+               <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span
+            class="p">,</span>
+               <span class="n">font</span><span class="o">=</span><span class="n">DEFAULT_FONT</span><span
+            class="p">,</span>
+               <span class="n">font_size</span><span class="o">=</span><span class="n">DEFAULT_FONT_SIZE</span><span
+            class="p">,</span>
+               <span class="o">**</span><span class="n">kwargs</span>
+               <span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_font</span> <span
+            class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_font</span><span class="p">(</span><span
+            class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">message</span> <span class="ow">is</span> <span class="kc">None</span><span
+            class="p">:</span>
+            <span class="c1"># Then read from stdin instead</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sys</span><span
+            class="o">.</span><span class="n">stdin</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span><span
+            class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">colour</span><span
+            class="p">,</span> <span class="n">background_colour</span><span class="p">,</span> <span
+            class="n">speed</span><span class="p">,</span> <span class="n">font_y_offset</span><span class="p">,</span> <span
+            class="n">invert</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Start off-screen (self.WIDTH), end at the approximate end of message ( -(length*size) ), stepping backwards (-1)</span>
+            <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span
+            class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span
+            class="n">WIDTH</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span
+            class="mi">1</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span
+            class="n">message</span><span class="p">)</span> <span class="o">*</span> <span
+            class="n">font_size</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span
+            class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span
+            class="n">message</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span
+            class="n">background_colour</span><span class="p">,</span> <span class="n">position</span><span
+            class="p">,</span> <span class="n">font_y_offset</span><span class="p">,</span> <span
+            class="n">invert</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span
+            class="p">(</span><span class="n">speed</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SenseHatUtility.scroll_repeat"><a class="viewcode-back"
+                                                                  href="../index.html#utility.SenseHatUtility.scroll_repeat">[docs]</a>    <span
+        class="k">def</span> <span class="nf">scroll_repeat</span><span class="p">(</span><span
+        class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span
+        class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span
+        class="p">):</span>
+        <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span
+            class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
+            class="n">count</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span><span
+            class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SenseHatUtility.show_icon"><a class="viewcode-back"
+                                                              href="../index.html#utility.SenseHatUtility.show_icon">[docs]</a>    <span
+        class="k">def</span> <span class="nf">show_icon</span><span class="p">(</span><span class="bp">self</span><span
+        class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span
+        class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load an icon by name and show it.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name: Name of icon</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">icon</span> <span class="o">=</span> <span class="n">SenseHatIconCollection</span><span
+            class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sh</span><span class="o">.</span><span
+            class="n">set_pixels</span><span class="p">(</span><span class="n">icon</span><span class="p">[</span><span
+            class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">pixels</span><span
+            class="p">)</span></div>
+
+<div class="viewcode-block" id="SenseHatUtility.show_clock"><a class="viewcode-back"
+                                                               href="../index.html#utility.SenseHatUtility.show_clock">[docs]</a>    <span
+        class="k">def</span> <span class="nf">show_clock</span><span class="p">(</span><span class="bp">self</span><span
+        class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the dynamic clock and show it.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            **kwargs: unused</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">icon</span> <span class="o">=</span> <span class="n">SenseHatIconCollection</span><span
+            class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sh</span><span class="o">.</span><span
+            class="n">set_pixels</span><span class="p">(</span><span class="n">icon</span><span class="o">.</span><span
+            class="n">clock</span><span class="p">()</span><span class="o">.</span><span class="n">pixels</span><span
+            class="p">)</span></div>
+
+<div class="viewcode-block" id="SenseHatUtility.show_clock_forever"><a class="viewcode-back"
+                                                                       href="../index.html#utility.SenseHatUtility.show_clock_forever">[docs]</a>    <span
+        class="k">def</span> <span class="nf">show_clock_forever</span><span class="p">(</span><span
+        class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span
+        class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_clock</span><span
+            class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span
+            class="mi">60</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_xy2px</span><span class="p">(</span><span class="bp">self</span><span
+            class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper to transform XY coordinates in the -4 to +4 range into a pixel number</span>
+
+<span class="sd">        Notes:</span>
+
+<span class="sd">        00 01 02 03 04 05 06 07</span>
+<span class="sd">        08 09 10 11 12 13 14 15</span>
+<span class="sd">        16 17 18 19 20 21 22 23</span>
+<span class="sd">        24 25 26 27 28 29 30 31</span>
+<span class="sd">        32 33 34 35 36 37 38 39</span>
+<span class="sd">        40 41 42 43 44 45 46 47</span>
+<span class="sd">        48 49 50 51 52 53 54 55</span>
+<span class="sd">        56 57 58 59 60 61 62 63</span>
+
+<span class="sd">        What about this?</span>
+<span class="sd">           -4 -3 -2 -1 +1 +2 +3 +4</span>
+<span class="sd">        +4</span>
+<span class="sd">        +3</span>
+<span class="sd">        +2</span>
+<span class="sd">        +1</span>
+<span class="sd">        -1</span>
+<span class="sd">        -2</span>
+<span class="sd">        -3</span>
+<span class="sd">        -4</span>
+<span class="sd">        Easier to &#39;draw&#39; on, but need to translate between the two...</span>
+<span class="sd">        in: coordinate, eg -2,+2</span>
+<span class="sd">        out: pixel, eg 18</span>
+<span class="sd">        steps: re-root coordinate - add 4 to X and  subtract 4 from Y, then flip +/- (eg. +2,+2)</span>
+<span class="sd">            multiply Y by 8 to get row start (eg. 16)</span>
+<span class="sd">            add X to get pixel (eg. 18)</span>
+
+<span class="sd">        Warnings:</span>
+<span class="sd">            There is no zero! This may turn out to be a big problem. Hope not...</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: X coordinate (between -4 and +4)</span>
+<span class="sd">            y: Y coordinate (between -4 and +4)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pixel number (between 0 and 63)</span>
+
+<span class="sd">        Examples:</span>
+
+
+<span class="sd">            &gt;&gt;&gt; shu = SenseHatUtility()</span>
+<span class="sd">            &gt;&gt;&gt; shu._xy2px(-2, 2)</span>
+<span class="sd">            18</span>
+<span class="sd">            &gt;&gt;&gt; shu._xy2px(2,8) #doctest: +ELLIPSIS</span>
+<span class="sd">            Traceback (most recent call last):</span>
+<span class="sd">              File &quot;&lt;input&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="sd">              File &quot;.../utility.py&quot;, line ..., in _xy2px</span>
+<span class="sd">                assert -4 &lt;= y &lt;= 4</span>
+<span class="sd">            AssertionError</span>
+<span class="sd">            &gt;&gt;&gt; ([shu._xy2px(x,y) for x in range(-4,4) for y in range(-4,4) if x is not 0 and y is not 0 ])</span>
+<span class="sd">            [64, 56, 48, 40, 24, 16, 8, 65, 57, 49, 41, 25, 17, 9, 66, 58, 50, 42, 26, 18, 10, 67, 59, 51, 43, 27, 19, 11, 69, 61, 53, 45, 29, 21, 13, 70, 62, 54, 46, 30, 22, 14, 71, 63, 55, 47, 31, 23, 15]</span>
+
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="o">-</span><span class="mi">4</span> <span
+            class="o">&lt;=</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">4</span>
+        <span class="k">assert</span> <span class="o">-</span><span class="mi">4</span> <span
+            class="o">&lt;=</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="mi">4</span>
+        <span class="k">assert</span> <span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="n">y</span> <span class="o">!=</span> <span class="mi">0</span>
+
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span
+            class="n">x</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,</span> <span
+            class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span
+            class="n">y</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span
+            class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="mi">8</span><span
+            class="p">)</span>
+        <span class="k">return</span> <span class="n">p</span>
+
+
+<div class="viewcode-block" id="SenseHatUtility.pulse"><a class="viewcode-back"
+                                                          href="../index.html#utility.SenseHatUtility.pulse">[docs]</a>    <span
+        class="k">def</span> <span class="nf">pulse</span><span class="p">(</span><span class="bp">self</span><span
+        class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">speed</span><span
+        class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="o">**</span><span
+        class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pulse a colour from 4 pixels lit in the middle to all-but-4 pixels lit.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            colour:</span>
+<span class="sd">            speed: value to time.sleep() for</span>
+<span class="sd">            count: Number of repetitions</span>
+<span class="sd">            **kwargs:</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span
+            class="n">colour</span><span class="o">.</span><span class="n">get_rgb_int</span><span class="p">())</span>
+        <span class="c1"># Old approach (didn&#39;t work, code looks horrible)</span>
+        <span class="n">frames</span> <span class="o">=</span> <span class="mi">7</span> <span class="o">*</span> <span
+            class="p">[</span><span class="mi">64</span> <span class="o">*</span> <span class="p">[[</span><span
+            class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span
+            class="mi">0</span><span class="p">]]]</span>
+        <span class="c1">#</span>
+        <span class="c1"># for i in (27, 28, 35, 36):</span>
+        <span class="c1">#     frames[0][i] = c</span>
+        <span class="c1">#     frames[6][i] = c</span>
+        <span class="c1"># for i in (26, 27, 28, 29, 34, 35, 36, 37, 19, 20, 43, 44):</span>
+        <span class="c1">#     frames[1][i] = c</span>
+        <span class="c1">#     frames[5][i] = c</span>
+        <span class="c1"># for i in (11, 12, 18, 19, 20, 21, 25, 26, 27, 28, 29, 30, 33, 34, 35, 36, 37, 38, 42, 43, 44, 45, 51, 52):</span>
+        <span class="c1">#     frames[2][i] = c</span>
+        <span class="c1">#     frames[4][i] = c</span>
+        <span class="c1"># for i in (</span>
+        <span class="c1">#         3, 4, 10, 11, 12, 13, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,</span>
+        <span class="c1">#         38, 39, 41, 42, 43, 44, 45, 46, 50, 51, 52, 53, 59, 60):</span>
+        <span class="c1">#     frames[3][i] = c</span>
+
+        <span class="c1"># New approach</span>
+
+
+        <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span
+            class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
+            class="n">count</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span
+            class="n">frames</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sh</span><span
+            class="o">.</span><span class="n">set_pixels</span><span class="p">(</span><span class="n">frame</span><span
+            class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span
+            class="p">(</span><span class="n">speed</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SenseHatUtility.fade_out"><a class="viewcode-back"
+                                                             href="../index.html#utility.SenseHatUtility.fade_out">[docs]</a>    <span
+        class="k">def</span> <span class="nf">fade_out</span><span class="p">(</span><span class="bp">self</span><span
+        class="p">,</span> <span class="n">speed</span><span class="p">):</span>
+        <span class="n">steps</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">-</span> <span
+            class="mi">47</span>  <span
+            class="c1"># colour offset. 47 == 0 in terms of Sense HAT&#39;s brightness.</span>
+        <span class="n">fade</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span
+            class="n">_fade_backup</span> <span class="o">=</span> <span class="bp">self</span><span
+            class="o">.</span><span class="n">sh</span><span class="o">.</span><span class="n">get_pixels</span><span
+            class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span
+            class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
+            class="n">steps</span><span class="p">):</span>
+            <span class="n">fade</span> <span class="o">=</span> <span class="p">[[</span><span
+            class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
+            class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span
+            class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
+            class="n">g</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span
+            class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
+            class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span> <span
+            class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span
+            class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">fade</span><span
+            class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sh</span><span class="o">.</span><span
+            class="n">set_pixels</span><span class="p">(</span><span class="n">fade</span><span class="p">)</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span
+            class="n">speed</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SenseHatUtility.backup"><a class="viewcode-back"
+                                                           href="../index.html#utility.SenseHatUtility.backup">[docs]</a>    <span
+        class="k">def</span> <span class="nf">backup</span><span class="p">(</span><span class="bp">self</span><span
+        class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_backup</span> <span
+            class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sh</span><span
+            class="o">.</span><span class="n">get_pixels</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SenseHatUtility.restore"><a class="viewcode-back"
+                                                            href="../index.html#utility.SenseHatUtility.restore">[docs]</a>    <span
+        class="k">def</span> <span class="nf">restore</span><span class="p">(</span><span class="bp">self</span><span
+        class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sh</span><span class="o">.</span><span
+            class="n">set_pixels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span
+            class="n">_backup</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="clamp"><a class="viewcode-back"
+                                          href="../source/utility.html#utility.clamp">[docs]</a><span
+        class="k">def</span> <span class="nf">clamp</span><span class="p">(</span><span class="n">minimum</span><span
+        class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">maximum</span><span
+        class="p">):</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">minimum</span><span
+            class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span
+            class="p">,</span> <span class="n">maximum</span><span class="p">))</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span
+                        class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <div id="searchbox" style="display: none" role="search">
+                <h3>Quick search</h3>
+                <form class="search" action="../search.html" method="get">
+                    <div><input type="text" name="q"/></div>
+                    <div><input type="submit" value="Go"/></div>
+                    <input type="hidden" name="check_keywords" value="yes"/>
+                    <input type="hidden" name="area" value="default"/>
+                </form>
+            </div>
+            <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+    </div>
+    <div class="clearer"></div>
+</div>
+<div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+        <li class="right" style="margin-right: 10px">
+            <a href="../genindex.html" title="General Index"
+            >index</a></li>
+        <li class="right">
+            <a href="../py-modindex.html" title="Python Module Index"
+            >modules</a> |
+        </li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SenseHAT Utility 0.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html">Module code</a> &#187;</li>
+    </ul>
+</div>
+<div class="footer" role="contentinfo">
+    &#169; Copyright 2017, Aaron Fleming.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+</div>
+</body>
+</html>

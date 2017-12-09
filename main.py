@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-import sys
 import argparse
+import sys
 from distutils.util import strtobool  # This is to fix argparse's lame boolean handling
 
 from utility import SenseHatUtility, Colour
@@ -15,25 +15,27 @@ def main():
     )
     parser.add_argument("action", default="scroll", help="Currently implemented: {0}".format(available_actions))
     # Optional arguments with defaults
-    parser.add_argument("--autorestore", type=strtobool, default=True, choices=[True, False], help="Restore the previous display when done")
-    parser.add_argument("--colour", "--color", type=Colour, default="white", help="Output colour")
-    parser.add_argument("--background_colour", "--background_color", type=Colour, default="black",
+    parser.add_argument("-a", "--autorestore", type=strtobool, default=False, choices=[True, False],
+                        help="Restore the previous display when done. Can be useful to set this to True when using the 'scroll' and 'pulse' actions")
+    parser.add_argument("-c", "--colour", "--color", type=Colour, default="white", help="Output colour")
+    parser.add_argument("-bg", "--background_colour", "--background_color", type=Colour, default="black",
                         help="Output background colour")
-    parser.add_argument("--invert", type=strtobool, default=False, help="Invert colours")
-    parser.add_argument("--font", default=SenseHatUtility.DEFAULT_FONT,
+    parser.add_argument("-i", "--invert", type=strtobool, default=False,
+                        help="Invert text foreground and background colours")
+    parser.add_argument("-f", "--font", default=SenseHatUtility.DEFAULT_FONT,
                         help="Full path to font used for displaying text")
     parser.add_argument("--font_size", type=int, default=SenseHatUtility.DEFAULT_FONT_SIZE,
                         help="Point size to use for TrueType fonts")
-    parser.add_argument("--font_y_offset", type=int, default=SenseHatUtility.DEFAULT_Y_OFFSET,
+    parser.add_argument("-y", "--font_y_offset", type=int, default=SenseHatUtility.DEFAULT_Y_OFFSET,
                         help="Offset text display up (negative values) or down (positive values)")
     parser.add_argument("--rotation", type=int, choices=[0, 90, 180, 270], default=180,
                         help="Set the rotation of the screen")
-    parser.add_argument("--speed", type=float, default=0.05,
+    parser.add_argument("-s", "--speed", type=float, default=0.05,
                         help="The number of seconds each frame is held when animating")
     parser.add_argument("--count", type=int, default=2, help="The number of times to repeat an action (if applicable)")
     # Optional arguments without defaults
-    parser.add_argument("--message", help="Display this message instead of reading from stdin")
-    parser.add_argument("--name", help="Some actions require a name to be passed")
+    parser.add_argument("-m", "--message", help="Display this message instead of reading from stdin")
+    parser.add_argument("-n", "--name", help="Some actions require a name to be passed")
     args = parser.parse_args()
 
     # Set any settings, then delete them from args, so that they're not passed to SHUtility as **kwargs

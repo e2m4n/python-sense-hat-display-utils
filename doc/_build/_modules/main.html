@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>main &#8212; SenseHAT Utility 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css"/>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css"/>
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT: '../',
+            VERSION: '0.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE: true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html"/>
+    <link rel="search" title="Search" href="../search.html"/>
+</head>
+<body>
+<div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+        <li class="right" style="margin-right: 10px">
+            <a href="../genindex.html" title="General Index"
+               accesskey="I">index</a></li>
+        <li class="right">
+            <a href="../py-modindex.html" title="Python Module Index"
+            >modules</a> |
+        </li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SenseHAT Utility 0.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
+    </ul>
+</div>
+
+<div class="document">
+    <div class="documentwrapper">
+        <div class="bodywrapper">
+            <div class="body" role="main">
+
+                <h1>Source code for main</h1>
+                <div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">distutils.util</span> <span class="k">import</span> <span class="n">strtobool</span>  <span
+                        class="c1"># This is to fix argparse&#39;s lame boolean handling</span>
+
+<span class="kn">from</span> <span class="nn">utility</span> <span class="k">import</span> <span class="n">SenseHatUtility</span><span
+                        class="p">,</span> <span class="n">Colour</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../index.html#main.main">[docs]</a><span class="k">def</span> <span
+        class="nf">main</span><span class="p">():</span>
+    <span class="n">available_actions</span> <span class="o">=</span> <span class="p">[</span><span
+            class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span
+            class="n">SenseHatUtility</span><span class="o">.</span><span class="vm">__dict__</span> <span
+            class="k">if</span> <span class="n">i</span><span class="p">[:</span><span class="mi">1</span><span
+            class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;_&quot;</span> <span
+            class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="n">i</span><span
+            class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span
+            class="n">ArgumentParser</span><span class="p">(</span>
+        <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span
+            class="o">.</span><span class="n">ArgumentDefaultsHelpFormatter</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span
+            class="s2">&quot;Sense HAT Utilities&quot;</span><span class="p">,</span>
+        <span class="n">epilog</span><span class="o">=</span><span class="s2">&quot;(C) 2017 Aaron Fleming&quot;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">,</span> <span
+            class="n">default</span><span class="o">=</span><span class="s2">&quot;scroll&quot;</span><span
+            class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Currently implemented: </span><span
+            class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span
+            class="n">format</span><span class="p">(</span><span class="n">available_actions</span><span
+            class="p">))</span>
+    <span class="c1"># Optional arguments with defaults</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--autorestore&quot;</span><span class="p">,</span> <span
+            class="nb">type</span><span class="o">=</span><span class="n">strtobool</span><span class="p">,</span> <span
+            class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span
+            class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span
+            class="p">,</span> <span class="kc">False</span><span class="p">],</span> <span class="n">help</span><span
+            class="o">=</span><span class="s2">&quot;Restore the previous display when done&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--colour&quot;</span><span class="p">,</span> <span class="s2">&quot;--color&quot;</span><span
+            class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Colour</span><span
+            class="p">,</span> <span class="n">default</span><span class="o">=</span><span
+            class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">help</span><span
+            class="o">=</span><span class="s2">&quot;Output colour&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--background_colour&quot;</span><span class="p">,</span> <span
+            class="s2">&quot;--background_color&quot;</span><span class="p">,</span> <span class="nb">type</span><span
+            class="o">=</span><span class="n">Colour</span><span class="p">,</span> <span class="n">default</span><span
+            class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Output background colour&quot;</span><span
+            class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--invert&quot;</span><span class="p">,</span> <span
+            class="nb">type</span><span class="o">=</span><span class="n">strtobool</span><span class="p">,</span> <span
+            class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span
+            class="n">help</span><span class="o">=</span><span class="s2">&quot;Invert colours&quot;</span><span
+            class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--font&quot;</span><span class="p">,</span> <span
+            class="n">default</span><span class="o">=</span><span class="n">SenseHatUtility</span><span
+            class="o">.</span><span class="n">DEFAULT_FONT</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Full path to font used for displaying text&quot;</span><span
+            class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--font_size&quot;</span><span class="p">,</span> <span class="nb">type</span><span
+            class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span
+            class="o">=</span><span class="n">SenseHatUtility</span><span class="o">.</span><span class="n">DEFAULT_FONT_SIZE</span><span
+            class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Point size to use for TrueType fonts&quot;</span><span
+            class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--font_y_offset&quot;</span><span class="p">,</span> <span
+            class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span
+            class="n">default</span><span class="o">=</span><span class="n">SenseHatUtility</span><span
+            class="o">.</span><span class="n">DEFAULT_Y_OFFSET</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Offset text display up (negative values) or down (positive values)&quot;</span><span
+            class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--rotation&quot;</span><span class="p">,</span> <span class="nb">type</span><span
+            class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">choices</span><span
+            class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span
+            class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span
+            class="mi">270</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span
+            class="mi">180</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Set the rotation of the screen&quot;</span><span
+            class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--speed&quot;</span><span class="p">,</span> <span
+            class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span
+            class="n">default</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The number of seconds each frame is held when animating&quot;</span><span
+            class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--count&quot;</span><span class="p">,</span> <span
+            class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span
+            class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span
+            class="n">help</span><span class="o">=</span><span class="s2">&quot;The number of times to repeat an action (if applicable)&quot;</span><span
+            class="p">)</span>
+    <span class="c1"># Optional arguments without defaults</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--message&quot;</span><span class="p">,</span> <span
+            class="n">help</span><span class="o">=</span><span class="s2">&quot;Display this message instead of reading from stdin&quot;</span><span
+            class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span
+            class="p">(</span><span class="s2">&quot;--name&quot;</span><span class="p">,</span> <span
+            class="n">help</span><span class="o">=</span><span class="s2">&quot;Some actions require a name to be passed&quot;</span><span
+            class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span
+            class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c1"># Set any settings, then delete them from args, so that they&#39;re not passed to SHUtility as **kwargs</span>
+    <span class="n">shu</span> <span class="o">=</span> <span class="n">SenseHatUtility</span><span
+            class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">autorestore</span><span
+            class="p">)</span>
+    <span class="k">del</span> <span class="n">args</span><span class="o">.</span><span class="n">autorestore</span>
+
+    <span class="n">shu</span><span class="o">.</span><span class="n">set_rotation</span><span class="p">(</span><span
+            class="n">args</span><span class="o">.</span><span class="n">rotation</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">args</span><span class="o">.</span><span class="n">rotation</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">action</span> <span
+            class="o">==</span> <span class="s2">&quot;scroll1&quot;</span><span class="p">:</span>
+        <span class="c1"># Specific function call:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span
+            class="n">args</span><span class="p">,</span> <span class="s2">&quot;message&quot;</span><span
+            class="p">):</span>
+            <span class="n">shu</span><span class="o">.</span><span class="n">scroll</span><span class="p">(</span><span
+            class="n">args</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span
+            class="n">args</span><span class="o">.</span><span class="n">colour</span><span class="p">,</span> <span
+            class="n">args</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sys</span><span
+            class="o">.</span><span class="n">stdin</span><span class="p">:</span>
+                <span class="n">shu</span><span class="o">.</span><span class="n">scroll</span><span
+            class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">args</span><span
+            class="o">.</span><span class="n">colour</span><span class="p">,</span> <span class="n">args</span><span
+            class="o">.</span><span class="n">speed</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Generic function call:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">shu</span><span
+            class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">action</span><span
+            class="p">):</span>
+            <span class="c1"># Strip action from args - function won&#39;t be expecting them</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">args</span><span
+            class="o">.</span><span class="n">action</span>
+            <span class="k">del</span> <span class="n">args</span><span class="o">.</span><span class="n">action</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="n">shu</span><span
+            class="p">,</span> <span class="n">action</span><span class="p">)(</span><span class="o">**</span><span
+            class="n">args</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span
+            class="n">ex</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span
+            class="p">(</span><span class="s2">&quot;Error calling action &#39;</span><span class="si">{0}</span><span
+            class="s2">&#39;: </span><span class="si">{1}</span><span class="s2">&quot;</span><span
+            class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">action</span><span
+            class="p">,</span> <span class="n">ex</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span
+            class="s2">&quot;Unknown action: </span><span class="si">{0}</span><span class="s2"> &quot;</span><span
+            class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span
+            class="o">.</span><span class="n">action</span><span class="p">))</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span
+                        class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <div id="searchbox" style="display: none" role="search">
+                <h3>Quick search</h3>
+                <form class="search" action="../search.html" method="get">
+                    <div><input type="text" name="q"/></div>
+                    <div><input type="submit" value="Go"/></div>
+                    <input type="hidden" name="check_keywords" value="yes"/>
+                    <input type="hidden" name="area" value="default"/>
+                </form>
+            </div>
+            <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+    </div>
+    <div class="clearer"></div>
+</div>
+<div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+        <li class="right" style="margin-right: 10px">
+            <a href="../genindex.html" title="General Index"
+            >index</a></li>
+        <li class="right">
+            <a href="../py-modindex.html" title="Python Module Index"
+            >modules</a> |
+        </li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SenseHAT Utility 0.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html">Module code</a> &#187;</li>
+    </ul>
+</div>
+<div class="footer" role="contentinfo">
+    &#169; Copyright 2017, Aaron Fleming.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+</div>
+</body>
+</html>

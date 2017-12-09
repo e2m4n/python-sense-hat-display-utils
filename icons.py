@@ -60,7 +60,7 @@ class SenseHatIcon(object):
             self.pixels = [eval(i) for i in list(self.__sample.replace(" ", ""))]
         else:
             self.pixels = [eval(i) for i in list(pixel_string.replace(" ",
-                                                                      ""))]  # This doesn't work now constants are "self.XXX" UPDATE: F**K YOU PYTHON
+                                                                      ""))]  # This doesn't work now constants are "self.XXX" UPDATE: F**K YOU PYTHON. Set constants to module-level instead
             # self.pixels = [eval(i) for i in list(["self."+item for item in list(pixel_string.replace(" ",""))])]
 
 
@@ -121,7 +121,7 @@ class SenseHatIconCollection(dict):
         if hhmm is None:
             now = time.localtime()
         else:
-            now = time.strptime(hhmm,"%H%M")
+            now = time.strptime(hhmm, "%H%M")
 
         hours = now.tm_hour % 12
         minutes = now.tm_min
@@ -181,4 +181,5 @@ class SenseHatIconCollection(dict):
 
 if __name__ == '__main__':
     import doctest
+
     doctest.testmod()
