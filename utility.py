@@ -73,16 +73,16 @@ class SenseHatUtility(object):
         self._font = None
         self._fade_backup = None
         self._backup = None
-        self.backup()
+        self.__backup()
 
     def __del__(self):
         """
         Restore the original display when done
 
         """
-        self.fade_out()
+        # self.fade_out(speed=0.01)
         if self.autorestore:
-            self.restore()
+            self.__restore()
         self.sh = None
 
     def __getattr__(self, item):
@@ -138,7 +138,7 @@ class SenseHatUtility(object):
             if os.path.isabs(font):
                 full_font_path = font
             else:
-                full_font_path = "{}{}{}".format(os.path.dirname(os.path.abspath(__file__)), os.sep, font)
+                full_font_path = "{0}{1}{2}".format(os.path.dirname(os.path.abspath(__file__)), os.sep, font)
 
             if font[-3:] == "ttf":
                 self._font = ImageFont.truetype(full_font_path, font_size)
@@ -211,33 +211,33 @@ class SenseHatUtility(object):
         # Output the image to the Sense HAT
         self.sh.set_pixels(list(map(list, image.getdata())))
 
-    def scroll(self,
-               message,
-               colour=Colour(DEFAULT_FOREGROUND),
-               background_colour=Colour(DEFAULT_BACKGROUND),
-               speed=DEFAULT_SPEED,
-               font_y_offset=DEFAULT_Y_OFFSET,
-               invert=False,
-               font=DEFAULT_FONT,
-               font_size=DEFAULT_FONT_SIZE,
-               **kwargs
-               ):
+    def _scroll(self,
+                message,
+                colour=Colour(DEFAULT_FOREGROUND),
+                background_colour=Colour(DEFAULT_BACKGROUND),
+                speed=DEFAULT_SPEED,
+                font_y_offset=DEFAULT_Y_OFFSET,
+                invert=False,
+                font=DEFAULT_FONT,
+                font_size=DEFAULT_FONT_SIZE,
+                **kwargs
+                ):
         if self._font is None:
             self._set_font(font, font_size)
 
         if message is None:
             # Then read from stdin instead
             for line in sys.stdin:
-                self.scroll(line, colour, background_colour, speed, font_y_offset, invert)
+                self._scroll(line, colour, background_colour, speed, font_y_offset, invert)
         else:
             # Start off-screen (self.WIDTH), end at the approximate end of message ( -(length*size) ), stepping backwards (-1)
             for position in range(self.WIDTH, (-1 * len(message) * font_size), -1):
                 self.print(message, colour, background_colour, position, font_y_offset, invert)
                 time.sleep(speed)
 
-    def scroll_repeat(self, count=2, **kwargs):
-        for number in range(0, count):
-            self.scroll(**kwargs)
+    def scroll(self, repeat=1, **kwargs):
+        for number in range(0, repeat):
+            self._scroll(**kwargs)
 
     def show_icon(self, name, **kwargs):
         """
@@ -260,18 +260,21 @@ class SenseHatUtility(object):
         """
         icon = SenseHatIconCollection()
         self.sh.set_pixels(icon.clock().pixels)
+        if self.autorestore:  # Hold it for a visible amount of time
+            time.sleep(5)
 
-    def show_clock_forever(self, **kwargs):
-        """
-        Show the clock until interrupted by CTRL+C
-
-        Args:
-            **kwargs: unused
-
-        """
-        while True:
-            self.show_clock(**kwargs)
-            time.sleep(30)
+    # Obsoleted by --repeat = -1
+    # def show_clock_forever(self, **kwargs):
+    #     """
+    #     Show the clock until interrupted by CTRL+C
+    #
+    #     Args:
+    #         **kwargs: unused
+    #
+    #     """
+    #     while True:
+    #         self.show_clock(**kwargs)
+    #         time.sleep(30)
 
     def _xy2px(self, x, y):
         """
@@ -356,50 +359,30 @@ class SenseHatUtility(object):
         p = a + (b * 8)
         return p
 
-    def pulse(self, colour, speed, count, **kwargs):
+    def pulse(self, colour, speed, repeat, **kwargs):
         """
         Pulse a colour from 4 pixels lit in the middle to all-but-4 pixels lit.
 
         Args:
             colour:
             speed: value to time.sleep() for
-            count: Number of repetitions
+            repeat: Number of repetitions
             **kwargs:
 
         Returns:
 
         """
         c = list(colour.get_rgb_int())
-        # Old approach (didn't work, code looks horrible)
-        # frames = 7 * [64 * [[0, 0, 0]]]
-        #
-        # for i in (27, 28, 35, 36):
-        #     frames[0][i] = c
-        #     frames[6][i] = c
-        # for i in (26, 27, 28, 29, 34, 35, 36, 37, 19, 20, 43, 44):
-        #     frames[1][i] = c
-        #     frames[5][i] = c
-        # for i in (11, 12, 18, 19, 20, 21, 25, 26, 27, 28, 29, 30, 33, 34, 35, 36, 37, 38, 42, 43, 44, 45, 51, 52):
-        #     frames[2][i] = c
-        #     frames[4][i] = c
-        # for i in (
-        #         3, 4, 10, 11, 12, 13, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
-        #         38, 39, 41, 42, 43, 44, 45, 46, 50, 51, 52, 53, 59, 60):
-        #     frames[3][i] = c
 
-        # New approach
-        # draw in one quadrant and copy it
-        #
+        # Draw in one quadrant and copy it to the others
         count_reverse_at = int(self.WIDTH / 2)  # 4
-        count_to = count * count_reverse_at * 2
-        start = 1
 
-        for i in range(start, count_to + 1):
-            for j in range(start, count_reverse_at + 1):  # Grow
+        for i in range(1, repeat + 1):
+            for j in range(1, count_reverse_at + 1):  # Grow
                 frame = self._pulse_get_frame(c, j)
                 self.sh.set_pixels(frame)
                 time.sleep(speed)
-            for j in range(count_reverse_at, start - 1, -1):  # Shrink
+            for j in range(count_reverse_at, 1 - 1, -1):  # Shrink
                 frame = self._pulse_get_frame(c, j)
                 self.sh.set_pixels(frame)
                 time.sleep(speed)
@@ -454,21 +437,21 @@ class SenseHatUtility(object):
         Returns:
 
         """
-        zb = self.ZERO_BRIGHTNESS
-        steps = 256 - zb
+        step = 2
+        steps = 256
         fade = self._fade_backup = self.sh.get_pixels()
-        for i in range(0, steps):
-            fade = [[max(0, r - 1), max(0, g - 1), max(0, b - 1)] for r, g, b in fade]
+        for i in range(0, steps, step):
+            fade = [[max(0, r - step), max(0, g - step), max(0, b - step)] for r, g, b in fade]
             self.sh.set_pixels(fade)
-            # if all([x == [0,0,0] for x in fade]):  # If all pixels are black then exit
-            if all([[r < zb, g < zb, b < zb] for i in fade for r, g, b in [i]]):
+            if all([x == [0, 0, 0] for x in fade]):  # If all pixels are black then exit
+                # if all([all([r < zb, g < zb, b < zb]) for i in fade for r, g, b in [i]]):  # This wasn't working.
                 break
             time.sleep(speed)
 
-    def backup(self):
+    def __backup(self):
         self._backup = self.sh.get_pixels()
 
-    def restore(self):
+    def __restore(self):
         self.sh.set_pixels(self._backup)
 
 

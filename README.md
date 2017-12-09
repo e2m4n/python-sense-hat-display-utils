@@ -1,8 +1,49 @@
-# Raspberry Pi Sense HAT utility library
+# Raspberry Pi Sense HAT display utility library
 
-Fun toys for the Sense HAT. Works well with Home Assistant.
+Fun toys for the Sense HAT LED display. Works well with Home Assistant.
 
 This code is not yet ready for public consumption, but it shouldn't do any damage.
+
+## Currently implemented
+
+### `print`
+
+Print some text set with `--message` on the tiny 8x8 pixel display.
+
+Not much good on its own, but is called by the next command.
+
+### `scroll`
+
+A classic scrolling text effect. Reads from stdin by default. Use the `--message` option to pass text from the command-line instead.
+
+The default font has lots of accented characters, but you can use a different font with the `--font` option.
+Both .ttf and .pil fonts are supported.
+
+If you use a TrueType font then you might need to play with the `--font_size` option to make it readable.
+
+Invert the display with `--invert true` or set foreground and background colours with `-c` and `-bg`. These can be named or "#rrggbb" hex colours.
+
+Use `--repeat -1` to scroll forever.
+Use `--autorestore true` to restore whatever was on the screen before when done scrolling.
+
+### `pulse`
+
+Pulse a colour (`-c`) out and in. Best used with the `--speed` and `--repeat` options.
+
+### `show_clock`
+
+Show a tiny analogue clock.
+
+Use `--repeat -1` to use your Sense HAT as an inaccurate timekeeper.
+
+### `fade_out`
+
+Fade to black. Or, rather, fade to 47, which is the same thing.
+
+### `show_icon`
+
+Icons coming soon.
+
 
 ## Getting started
 

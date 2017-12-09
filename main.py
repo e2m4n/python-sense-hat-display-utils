@@ -32,7 +32,8 @@ def main():
                         help="Set the rotation of the screen")
     parser.add_argument("-s", "--speed", type=float, default=0.05,
                         help="The number of seconds each frame is held when animating")
-    parser.add_argument("--count", type=int, default=2, help="The number of times to repeat an action (if applicable)")
+    parser.add_argument("-r", "--repeat", type=int, default=1,
+                        help="The number of times to repeat an action. -1 = repeat until killed with CTRL+C")
     # Optional arguments without defaults
     parser.add_argument("-m", "--message", help="Display this message instead of reading from stdin")
     parser.add_argument("-n", "--name", help="Some actions require a name to be passed")
@@ -45,7 +46,7 @@ def main():
     shu.set_rotation(args.rotation)
     del args.rotation
 
-    if args.action == "scroll1":
+    if args.action == "example":
         # Specific function call:
         if hasattr(args, "message"):
             shu.scroll(args.message, args.colour, args.speed)
@@ -59,7 +60,12 @@ def main():
             action = args.action
             del args.action
             try:
-                getattr(shu, action)(**args.__dict__)
+                if args.repeat is -1:
+                    del args.repeat
+                    while True:
+                        getattr(shu, action)(**args.__dict__)
+                else:
+                    getattr(shu, action)(**args.__dict__)
             except TypeError as ex:
                 sys.exit("Error calling action '{0}': {1}".format(action, ex))
         else:
