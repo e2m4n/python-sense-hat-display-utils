@@ -51,11 +51,11 @@ You'll need a Raspberry Pi and Sense HAT first.
 
 ### Prerequisites
 
-Change to the directory you downloaded this to.
+[RTIMU](https://github.com/RPi-Distro/RTIMULib/tree/master/Linux/python)
 
-Install requirements:
+Install with pip:
 ```
-pip install -r requirements.txt
+pip install sense-hat-display-utils
 ```
 
 ### Running
