@@ -3,7 +3,7 @@ import argparse
 import sys
 from distutils.util import strtobool  # This is to fix argparse's lame boolean handling
 
-from utility import SenseHatUtility, Colour
+from sense_hat_display_utils.utility import SenseHatUtility, Colour
 
 
 def main():

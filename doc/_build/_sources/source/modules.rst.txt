@@ -2,8 +2,8 @@ SenseHatProject
 ===============
 
 .. toctree::
-   :maxdepth: 4
+:maxdepth: 4
 
-   icons
-   main
-   utility
+       icons
+       main
+       utility

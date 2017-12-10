@@ -10,7 +10,7 @@
  */
 
 
-/* Non-minified version JS is _stemmer.js if file is provided */
+/* Non-minified version JS is _stemmer.js if file is provided */ 
 /**
  * Porter Stemmer
  */
@@ -112,7 +112,7 @@ var Stemmer = function () {
                 else if (re3.test(w)) {
                     re = /.$/;
                     w = w.replace(re, "");
-                }
+        }
                 else if (re4.test(w))
                     w = w + "e";
             }
@@ -178,7 +178,7 @@ var Stemmer = function () {
             re3 = new RegExp("^" + C + v + "[^aeiouwxy]$");
             if (re.test(stem) || (re2.test(stem) && !(re3.test(stem))))
                 w = stem;
-        }
+    }
         re = /ll$/;
         re2 = new RegExp(mgr1);
         if (re.test(w) && re2.test(w)) {
@@ -192,6 +192,7 @@ var Stemmer = function () {
         return w;
     }
 };
+
 
 
 /**
@@ -550,11 +551,11 @@ var Search = {
                             var data = jqxhr.responseText;
                             if (data !== '' && data !== undefined) {
                                 listItem.append(Search.makeSearchSummary(data, searchterms, hlterms));
-                            }
-                            Search.output.append(listItem);
+                    }
+                    Search.output.append(listItem);
                             listItem.slideDown(5, function () {
                                 displayNextItem();
-                            });
+                    });
                         }
                     });
                 } else {
@@ -563,7 +564,7 @@ var Search = {
                     listItem.slideDown(5, function () {
                         displayNextItem();
                     });
-                }
+        }
             }
             // search finished, update title and status message
             else {
@@ -621,7 +622,7 @@ var Search = {
                                 allfound = false;
                                 break;
                             }
-                        }
+            }
                         if (!allfound) {
                             continue;
                         }
@@ -640,7 +641,7 @@ var Search = {
                         score += Scorer.objPrioDefault;
                     }
                     results.push([docnames[match[0]], fullname, '#' + anchor, descr, score, filenames[match[0]]]);
-                }
+        }
             }
         }
 
@@ -691,7 +692,7 @@ var Search = {
                     if (!(file in scoreMap))
                         scoreMap[file] = {};
                     scoreMap[file][word] = o.score;
-                }
+        }
             });
 
             // create the mapping
@@ -720,7 +721,7 @@ var Search = {
                     $u.contains(titleterms[excluded[i]] || [], file)) {
                     valid = false;
                     break;
-                }
+        }
             }
 
             // if we have still a valid result we can add it to the result list
@@ -732,7 +733,7 @@ var Search = {
                 }));
                 results.push([docnames[file], titles[file], '', null, score, filenames[file]]);
             }
-        }
+    }
         return results;
     },
 

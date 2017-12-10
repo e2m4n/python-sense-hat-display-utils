@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -47,92 +48,34 @@
                     <span id="icons-module"></span>
                     <h1>icons module<a class="headerlink" href="#module-icons" title="Permalink to this headline">¶</a>
                     </h1>
-                    <dl class="class">
-                        <dt id="icons.SenseHatIcon">
-                            <em class="property">class </em><code class="descclassname">icons.</code><code
-                                class="descname">SenseHatIcon</code><span class="sig-paren">(</span><em>pixel_string=None</em><span
-                                class="sig-paren">)</span><a class="reference internal"
-                                                             href="../_modules/icons.html#SenseHatIcon"><span
-                                class="viewcode-link">[source]</span></a><a class="headerlink"
-                                                                            href="#icons.SenseHatIcon"
-                                                                            title="Permalink to this definition">¶</a>
-                        </dt>
-                        <dd><p>Bases: <a class="reference external"
-                                         href="https://docs.python.org/2/library/functions.html#object"
-                                         title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span
-                                class="pre">object</span></code></a></p>
-                            <p>A representation of an 8x8 icon for the Sense HAT display</p>
-                            <p>How shall we represent [R,G,B] * 8 * 8 ?
-                                Single character represents pixel colour?
-                                v1:</p>
-                            <p>W = [255, 255, 255] # white
-                                R = [255, 0, 0] # red
-                                G = [0, 255, 0] # green
-                                B = [0, 0, 255] # blue
-                                C = [0, 255, 255] # cyan
-                                M = [255, 0, 255] # magenta
-                                Y = [255, 255, 0] # yellow
-                                K = [0, 0, 0] # black</p>
-                            <p>v1.1 extended palette:
-                                O = [255, 128, 0] # orange
-                                P = [255, 0, 127] # pink
-                                L = [128, 255, 0] # lime
-                                T = [0, 255, 128] # turquoise
-                                U = [0, 128, 255] # ultramarine
-                                V = [127, 0, 255] # violet
-                                S = [128,128,128] # stone</p>
-                        </dd>
-                    </dl>
-
-                    <dl class="class">
-                        <dt id="icons.SenseHatIconCollection">
-                            <em class="property">class </em><code class="descclassname">icons.</code><code
-                                class="descname">SenseHatIconCollection</code><span class="sig-paren">(</span><em>**kwargs</em><span
-                                class="sig-paren">)</span><a class="reference internal"
-                                                             href="../_modules/icons.html#SenseHatIconCollection"><span
-                                class="viewcode-link">[source]</span></a><a class="headerlink"
-                                                                            href="#icons.SenseHatIconCollection"
-                                                                            title="Permalink to this definition">¶</a>
-                        </dt>
-                        <dd><p>Bases: <a class="reference external"
-                                         href="https://docs.python.org/2/library/stdtypes.html#dict"
-                                         title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span
-                                class="pre">dict</span></code></a></p>
-                            <p>Icon collection for the Sense HAT</p>
-                            <dl class="method">
-                                <dt id="icons.SenseHatIconCollection.clock">
-                                    <code class="descname">clock</code><span
-                                        class="sig-paren">(</span><em>hhmm=None</em><span class="sig-paren">)</span><a
-                                        class="reference internal"
-                                        href="../_modules/icons.html#SenseHatIconCollection.clock"><span
-                                        class="viewcode-link">[source]</span></a><a class="headerlink"
-                                                                                    href="#icons.SenseHatIconCollection.clock"
-                                                                                    title="Permalink to this definition">¶</a>
-                                </dt>
-                                <dd><p>Small analogue clock. Not very accurate.
-                                    Can show eight hours, so have intervals of 12 / 8 = 1.5 hours
-                                    Shift by 1.5 / 2 = 0.75 hours to shift to closest hour
-                                    How many minutes? Minimum 8: 0,7.5,15,22.5,30,37.5,45,52.5
-                                    Possibly try 16 by shifting outer segment one block clockwise, giving:
-                                    0.0, 3.75, 7.5, 11.25, 15.0, 18.75, 22.5, 26.25, 30.0, 33.75, 37.5, 41.25, 45.0,
-                                    48.75, 52.5, 56.25, 60.0
-                                    Returns:</p>
-                                </dd>
-                            </dl>
-
-                            <dl class="attribute">
-                                <dt id="icons.SenseHatIconCollection.icons">
-                                    <code class="descname">icons</code><em class="property"> = {'template': ' BBBBBBBB
-                                    BBBBBBBB BBBBBBBB BBBBBBBB BBBBBBBB BBBBBBBB BBBBBBBB BBBBBBBB ', 'estelada': '
-                                    BYYYYYYY BBRRRRRR BBBYYYYY BWBBRRRR BBBYYYYY BBRRRRRR BYYYYYYY KKKKKKKK '}</em><a
-                                        class="headerlink" href="#icons.SenseHatIconCollection.icons"
-                                        title="Permalink to this definition">¶</a></dt>
-                                <dd></dd>
-                            </dl>
-
-                        </dd>
-                    </dl>
-
+                    <table class="docutils field-list" frame="void" rules="none">
+                        <col class="field-name"/>
+                        <col class="field-body"/>
+                        <tbody valign="top">
+                        <tr class="field-odd field">
+                            <th class="field-name">members:</th>
+                            <td class="field-body">
+                                <table class="first last docutils field-list" frame="void" rules="none">
+                                    <col class="field-name"/>
+                                    <col class="field-body"/>
+                                    <tbody valign="top">
+                                    <tr class="field-odd field">
+                                        <th class="field-name">undoc-members:</th>
+                                        <td class="field-body"></td>
+                                    </tr>
+                                    <tr class="field-even field">
+                                        <th class="field-name" colspan="2">show-inheritance:</th>
+                                    </tr>
+                                    <tr class="field-even field">
+                                        <td>&#160;</td>
+                                        <td class="field-body"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
 
 
@@ -154,7 +97,7 @@
         </div>
     </div>
     <div class="clearer"></div>
-</div>
+    </div>
 <div class="related" role="navigation" aria-label="related navigation">
     <h3>Navigation</h3>
     <ul>

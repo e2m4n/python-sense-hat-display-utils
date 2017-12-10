@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 from colour import Color as _Color
 from sense_hat import SenseHat
 
-from icons import SenseHatIconCollection
+from sense_hat_display_utils.icons import SenseHatIconCollection
 
 
 class Colour(_Color):

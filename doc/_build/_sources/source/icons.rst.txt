@@ -2,6 +2,6 @@ icons module
 ============
 
 .. automodule:: icons
-    :members:
-    :undoc-members:
-    :show-inheritance:
+:members:
+        :undoc-members:
+        :show-inheritance:
